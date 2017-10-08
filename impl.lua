@@ -24,14 +24,16 @@ return function(wibox, awful, naughty, beautiful, timer, awesome, base)
     pomodoro.module_path = module_path
 
 
-    pomodoro.format = function (t) return "Pomodoro: <b>" .. t .. "</b>" end
+    pomodoro.format = function (t) return "" .. t .. "" end
     pomodoro.pause_title = "Pause finished."
     pomodoro.pause_text = "Get back to work!"
     pomodoro.work_title = "Pomodoro finished."
     pomodoro.work_text = "Time for a pause!"
     pomodoro.working = true
     pomodoro.widget = wibox.widget.textbox()
-    pomodoro.icon_widget = wibox.widget.imagebox()
+    pomodoro.widget.font = "Terminus 9"
+    pomodoro.icon_widget = wibox.widget.textbox()
+    pomodoro.icon_widget.font = "Terminus 9"
     pomodoro.timer = timer { timeout = 1 }
 
     -- Callbacks to be called when the pomodoro finishes or the rest time finishes
@@ -41,12 +43,14 @@ return function(wibox, awful, naughty, beautiful, timer, awesome, base)
     last_icon_used = nil
 
     function set_pomodoro_icon(icon_name)
-        local pomodoro_image_path = awful.util.getdir("config") .. "/" .. pomodoro.module_path .. "images/" .. icon_name .. ".png"
-        if last_icon_used == pomodoro_image_path then
-            return
-        end
-        last_icon_used = pomodoro_image_path
-        pomodoro.icon_widget:set_image(pomodoro_image_path)
+        local table = {
+            gray = " ⌛ ",
+            green = "<span foreground=\"green\"> ⌛ </span>",
+            locked = "<span foreground=\"white\"> ⌛ </span>",
+            orange = "<span foreground=\"orange\"> ⌛ </span>",
+            red= "<span foreground=\"red\"> ⌛ </span>"
+        }
+        pomodoro.icon_widget.markup = table[icon_name]
     end
 
     function pomodoro:settime(t)
