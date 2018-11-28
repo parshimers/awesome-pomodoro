@@ -9,7 +9,6 @@ local print     = print
 local tonumber = tonumber
 local math = require("math")
 
-module("pomodoro.impl")
 
 return function(wibox, awful, naughty, beautiful, timer, awesome, base)
     -- pomodoro timer widget
